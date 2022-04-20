@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:scannerapp/screens/readqr.dart';
-import 'package:scannerapp/screens/scanqr.dart';
+//import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:scannerapp/screens/scan_qr.dart';
+import 'package:scannerapp/screens/create_qr.dart';
+import 'package:scannerapp/screens/widgets/main_content.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,48 +12,53 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Scanner App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Scanner App'),
+      debugShowCheckedModeBanner: false,
+      darkTheme: ThemeData.dark(),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var qrDetails;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Center(
+            child: Text(
+          'QR Scanner',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        )),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>CreateScreen()));
-                  print('creating qr code');
+            MainButtons(
+              onClick: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (ctx) => ScanScreen()));
+              },
+              buttonName: 'Scan QR',
+            ),
+
+            SizedBox(height: 30,),
+
+            MainButtons(
+                onClick: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (ctx) => CreateScreen()));
                 },
-                child: Text('create QR code')),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>ScanScreen()));
-                  print('Read qr code');
-                },
-                child: Text('Read QR code')),
+                buttonName: 'Create QR'),
+            SizedBox(height: 40,),
           ],
         ),
       ),
